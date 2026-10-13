@@ -1,0 +1,29 @@
+---
+const nav = [['Stock','/stock'],['Sell & Consign','/#sell'],['Sourcing','/#source'],['Services','/#services'],['Contact','/contact']];
+---
+<header class="hdr">
+  <div class="wrap row">
+    <a href="/" class="mark" aria-label="Peters Prestige Autohaus, home">Peters Prestige <em>Autohaus</em></a>
+    <nav class="desk" aria-label="Primary"><ul>{nav.map(([l,h]) => <li><a href={h}>{l}</a></li>)}</ul></nav>
+    <details class="mob">
+      <summary aria-label="Menu"><span></span><span></span></summary>
+      <nav aria-label="Mobile"><ul>{nav.map(([l,h]) => <li><a href={h}>{l}</a></li>)}</ul></nav>
+    </details>
+  </div>
+</header>
+<style>
+.hdr{border-bottom:1px solid var(--line);background:var(--ivory);position:sticky;top:0;z-index:10}
+.row{display:flex;align-items:center;justify-content:space-between;min-height:72px}
+.mark{font:500 24px/1 var(--serif);text-decoration:none} .mark em{font-style:italic;color:var(--accent)}
+ul{list-style:none;margin:0;padding:0;display:flex;gap:32px}
+nav a{text-decoration:none;font:500 13px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+nav a:hover{color:var(--accent)}
+.mob{display:none}
+summary{list-style:none;cursor:pointer;width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;gap:7px;align-items:flex-end}
+summary::-webkit-details-marker{display:none} summary span{display:block;width:26px;height:1.5px;background:var(--ink)}
+@media (max-width:860px){
+  .desk{display:none} .mob{display:block}
+  .mob nav{position:absolute;left:0;right:0;top:72px;background:var(--ivory);border-bottom:1px solid var(--line);padding:8px var(--pad) 20px}
+  .mob ul{flex-direction:column;gap:0} .mob nav a{display:block;padding:14px 0;border-bottom:1px solid var(--line)}
+}
+</style>

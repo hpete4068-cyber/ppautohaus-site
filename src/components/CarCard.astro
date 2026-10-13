@@ -1,0 +1,22 @@
+---
+import { type Car, carTitle, formatPrice } from '../lib/stock';
+const { car } = Astro.props as { car: Car };
+---
+<article class="card">
+  {car.photos[0]
+    ? <img src={car.photos[0]} alt={carTitle(car)} loading="lazy" width="800" height="600" />
+    : <div class="placeholder" role="img" aria-label="Placeholder image">Placeholder image</div>}
+  <div class="meta">
+    {car.isSample && <span class="sample-badge">SAMPLE</span>}
+    {car.status !== 'available' && <span class="status">{car.status}</span>}
+    <h3>{carTitle(car)}</h3>
+    <p class="sub">{[car.variant, car.body, car.transmission].filter(Boolean).join(' · ')}</p>
+    <p class="price">{formatPrice(car.price)}</p>
+  </div>
+</article>
+<style>
+.card{background:var(--paper);border:1px solid var(--line)} .meta{padding:22px 22px 26px}
+h3{margin:10px 0 4px} .sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+.price{font:500 14px var(--sans);letter-spacing:.08em;margin:0}
+.status{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-left:8px}
+</style>

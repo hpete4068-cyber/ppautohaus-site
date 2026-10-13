@@ -1,0 +1,6 @@
+[
+  {"id":"SAMPLE-001","status":"available","year":"2020","make":"SAMPLE","model":"Grand Tourer","variant":"Placeholder vehicle","price":"POA","km":"","colour":"","transmission":"Automatic","body":"Coupe","description":"SAMPLE listing for layout only. Not a real vehicle.","photos":"","features":"Sample feature|Sample feature"},
+  {"id":"SAMPLE-002","status":"available","year":"2018","make":"SAMPLE","model":"Sports Saloon","variant":"Placeholder vehicle","price":"POA","km":"","colour":"","transmission":"Automatic","body":"Sedan","description":"SAMPLE listing for layout only. Not a real vehicle.","photos":"","features":""},
+  {"id":"SAMPLE-003","status":"under offer","year":"1995","make":"SAMPLE","model":"Classic Coupe","variant":"Placeholder vehicle","price":"POA","km":"","colour":"","transmission":"Manual","body":"Coupe","description":"SAMPLE listing for layout only. Not a real vehicle.","photos":"","features":""},
+  {"id":"SAMPLE-004","status":"sold","year":"2022","make":"SAMPLE","model":"Performance SUV","variant":"Placeholder vehicle","price":"POA","km":"","colour":"","transmission":"Automatic","body":"SUV","description":"SAMPLE listing for layout only. Not a real vehicle.","photos":"","features":""}
+]
