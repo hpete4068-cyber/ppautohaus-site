@@ -8,7 +8,7 @@ const year = new Date().getFullYear();
     <div><p class="eyebrow">Contact</p><p><a href={SITE.phoneHref}>{SITE.phone}</a><br /><a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />By appointment</p></div>
     <div><p class="eyebrow">Explore</p><p><a href="/stock">Stock</a><br /><a href="/#sell">Sell &amp; Consign</a><br /><a href="/#source">Sourcing</a><br /><a href={SITE.storageUrl}>Storage</a><br /><a href="/contact">Contact</a></p></div>
   </div>
-  <div class="wrap legal"><span>© {year} Peters Prestige Autohaus</span><span><!-- TODO: dealer licence number (confirm with Harry) --></span></div>
+  <div class="wrap legal"><span>© {year} Peters Prestige Autohaus</span><span>{SITE.legalName} · Licence No. {SITE.licenceNumber}</span></div>
 </footer>
 <style>
 .ftr{background:var(--ink);color:#e9e5dc;padding:72px 0 28px;margin-top:0}
