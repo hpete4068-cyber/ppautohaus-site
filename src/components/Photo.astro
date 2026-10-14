@@ -1,0 +1,26 @@
+---
+interface Props {
+  base: string;
+  alt: string;
+  sizes: string;
+  width: number;
+  height: number;
+  eager?: boolean;
+  position?: string;
+}
+const { base, alt, sizes, width, height, eager = false, position } = Astro.props;
+const large = `/images/${base}.webp`;
+const small = `/images/${base}-1200.webp`;
+---
+<img
+  src={small}
+  srcset={`${small} 1200w, ${large} 2400w`}
+  sizes={sizes}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={eager ? 'eager' : 'lazy'}
+  decoding={eager ? 'auto' : 'async'}
+  fetchpriority={eager ? 'high' : 'low'}
+  style={position ? `object-position:${position}` : undefined}
+/>

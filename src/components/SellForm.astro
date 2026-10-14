@@ -1,0 +1,212 @@
+---
+import { SELL_FORM_ENDPOINT, SITE } from '../lib/site';
+const states = ['QLD', 'NSW', 'VIC', 'SA', 'WA', 'TAS', 'NT', 'ACT'];
+---
+<form
+  id="sell-form"
+  class="sell"
+  novalidate
+  data-endpoint={SELL_FORM_ENDPOINT}
+  data-phone={SITE.phone}
+  data-phone-href={SITE.phoneHref}
+  data-email={SITE.email}
+  data-step="1"
+>
+  <p class="eyebrow">Sell or consign</p>
+  <h1>Sell or consign your prestige car</h1>
+  <p class="sub">Brisbane-based, buying and consigning Australia-wide.</p>
+
+  <ol class="progress" aria-label="Appraisal progress">
+    <li data-step="1" aria-current="step">1 · Car</li>
+    <li data-step="2">2 · Details</li>
+    <li data-step="3">3 · Notes</li>
+  </ol>
+  <div id="sell-errors" class="live" role="alert" aria-live="assertive" tabindex="-1"></div>
+
+  <div data-panel="1">
+    <h2 tabindex="-1">Your car</h2>
+    <div class="toggle" role="radiogroup" aria-label="How should we identify the car?">
+      <label><input type="radio" name="lookup" value="rego" checked /> I know the rego</label>
+      <label><input type="radio" name="lookup" value="make" /> Enter make &amp; model</label>
+    </div>
+    <div class="row2" data-lookup="rego">
+      <div class="field">
+        <label for="sell-rego">Registration</label>
+        <input id="sell-rego" name="rego" autocomplete="off" autocapitalize="characters" />
+        <p class="field-error" id="sell-rego-error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="sell-state">State</label>
+        <select id="sell-state" name="state">
+          {states.map(state => <option value={state} selected={state === 'QLD'}>{state}</option>)}
+        </select>
+        <p class="field-error" id="sell-state-error" hidden></p>
+      </div>
+    </div>
+    <div data-lookup="make" hidden>
+      <div class="row2">
+        <div class="field">
+          <label for="sell-make">Make</label>
+          <input id="sell-make" name="make" autocomplete="off" />
+          <p class="field-error" id="sell-make-error" hidden></p>
+        </div>
+        <div class="field">
+          <label for="sell-model">Model</label>
+          <input id="sell-model" name="model" autocomplete="off" />
+          <p class="field-error" id="sell-model-error" hidden></p>
+        </div>
+      </div>
+      <div class="field">
+        <label for="sell-year">Year</label>
+        <input id="sell-year" name="year" inputmode="numeric" autocomplete="off" maxlength="4" />
+        <p class="field-error" id="sell-year-error" hidden></p>
+      </div>
+    </div>
+    <div class="field">
+      <label for="sell-odo">Odometer (km)</label>
+      <input id="sell-odo" name="odometer" inputmode="numeric" autocomplete="off" />
+      <p class="field-error" id="sell-odo-error" hidden></p>
+    </div>
+    <fieldset>
+      <legend>What are you considering?</legend>
+      <div class="choices">
+        <label><input type="radio" name="intent" value="Sell" /> Sell outright</label>
+        <label><input type="radio" name="intent" value="Consign" /> Consign</label>
+        <label><input type="radio" name="intent" value="Not sure" /> Not sure yet</label>
+      </div>
+      <p class="field-error" id="sell-intent-error" hidden></p>
+    </fieldset>
+    <button class="btn btn-primary" type="submit" data-event="step1_complete">Start my appraisal →</button>
+    <p class="promise">Confidential and obligation-free. A PP Autohaus specialist will contact you personally.</p>
+  </div>
+
+  <div data-panel="2" hidden>
+    <h2 tabindex="-1">Your details</h2>
+    <div class="field">
+      <label for="sell-name">Full name</label>
+      <input id="sell-name" name="name" autocomplete="name" />
+      <p class="field-error" id="sell-name-error" hidden></p>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="sell-mobile">Mobile</label>
+        <input id="sell-mobile" name="mobile" type="tel" autocomplete="tel" inputmode="tel" />
+        <p class="field-error" id="sell-mobile-error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="sell-email">Email</label>
+        <input id="sell-email" name="email" type="email" autocomplete="email" inputmode="email" />
+        <p class="field-error" id="sell-email-error" hidden></p>
+      </div>
+    </div>
+    <div class="field">
+      <label for="sell-postcode">Postcode</label>
+      <input id="sell-postcode" name="postcode" inputmode="numeric" autocomplete="postal-code" maxlength="4" />
+      <p class="field-error" id="sell-postcode-error" hidden></p>
+    </div>
+    <fieldset>
+      <legend>Preferred contact</legend>
+      <div class="choices">
+        <label><input type="radio" name="contact" value="Call" /> Call</label>
+        <label><input type="radio" name="contact" value="SMS" /> SMS</label>
+        <label><input type="radio" name="contact" value="Email" /> Email</label>
+      </div>
+      <p class="field-error" id="sell-contact-error" hidden></p>
+    </fieldset>
+    <div class="field check">
+      <label for="sell-consent">
+        <input id="sell-consent" name="consent" type="checkbox" />
+        <span>I agree to Peters Prestige Autohaus contacting me about this appraisal. <a href="/contact#privacy">How we use enquiry details</a></span>
+      </label>
+      <p class="field-error" id="sell-consent-error" hidden></p>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" type="submit" data-event="form_submit">Request my appraisal</button>
+      <button class="text-btn" type="button" data-back>Back</button>
+    </div>
+    <p class="promise">Confidential and obligation-free. A PP Autohaus specialist will contact you personally.</p>
+  </div>
+
+  <div data-panel="3" hidden>
+    <h2 tabindex="-1">Add notes or photos</h2>
+    <p class="hint">Optional. Your request is already with us. Skip this if you have nothing to add.</p>
+    <div class="field">
+      <label for="sell-notes">Notes</label>
+      <textarea id="sell-notes" name="notes" rows="4"></textarea>
+      <p class="field-error" hidden></p>
+    </div>
+    <div class="field">
+      <label for="sell-photos">Photos, up to 5</label>
+      <input id="sell-photos" name="photos" type="file" accept="image/*" multiple />
+      <p class="hint">Files are not uploaded from here. If you choose any, we note the file names and you can email the photos.</p>
+      <p data-photo-count class="count"></p>
+      <p class="field-error" id="sell-photos-error" hidden></p>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" type="submit">Send notes</button>
+      <button class="text-btn" type="button" data-skip>Skip for now</button>
+    </div>
+  </div>
+
+  <div data-panel="done" hidden>
+    <h2 tabindex="-1">Request received</h2>
+    <p>Thank you. A PP Autohaus specialist will contact you personally. This is confidential and obligation-free.</p>
+    <p data-photo-followup hidden>Your photos stayed on this device. Email them to <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and mention your name.</p>
+  </div>
+
+  <p class="trust">{SITE.legalName} · Licence No. {SITE.licenceNumber} · <a href="#sold">Cars we've sold</a></p>
+
+  <div class="hp" aria-hidden="true">
+    <label>Company website <input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label>
+  </div>
+</form>
+<noscript>
+  <p class="noscript">To request an appraisal, call <a href={SITE.phoneHref}>{SITE.phone}</a> or email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+</noscript>
+<script>
+  import { mountSellForm } from '../scripts/sell-form';
+  const form = document.getElementById('sell-form');
+  if (form instanceof HTMLFormElement) mountSellForm(form);
+</script>
+<style>
+.sell{background:var(--paper);border:1px solid var(--line);padding:28px 26px 22px;position:relative}
+.sell h1{font-size:clamp(34px,4.4vw,52px);margin:0 0 8px}
+.sub{color:var(--ink-2);margin:0 0 22px}
+.sell h2{font-size:28px;margin:0 0 16px;scroll-margin-top:88px}
+.sell h2:focus{outline:none}
+.progress{list-style:none;display:flex;gap:10px;margin:0 0 18px;padding:0}
+.progress li{flex:1;border-top:2px solid var(--line);padding-top:8px;font:500 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.progress li[aria-current="step"],.progress li.is-done{border-color:var(--accent);color:var(--accent)}
+.live:not(:empty){background:#f4e8e4;color:#6d2418;padding:10px 12px;margin:0 0 14px;font-size:14px}
+.live:empty{margin:0}
+.live:focus{outline:none}
+.toggle{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);margin-bottom:14px}
+.toggle label{display:block;text-align:center;padding:12px 8px;font:500 14px var(--sans);cursor:pointer;position:relative}
+.toggle input{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.toggle label:has(input:checked){background:var(--ink);color:#fff}
+.toggle label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:-2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px;margin:0 0 14px;font:500 13px var(--sans)}
+.field input,.field select,.field textarea{font:400 16px/1.4 var(--sans);color:var(--ink);background:#fff;border:1px solid var(--line);padding:12px 12px;width:100%;border-radius:0}
+.field textarea{resize:vertical}
+.field-error{color:#8a1c1c;font-size:13px;margin:0}
+fieldset{border:0;margin:0 0 14px;padding:0}
+legend{font:500 13px var(--sans);margin-bottom:8px}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices label{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:10px 12px;background:#fff;font-weight:400;cursor:pointer}
+.choices label:has(input:checked){border-color:var(--accent);background:#eef3ef}
+.check label{display:flex;gap:10px;align-items:flex-start;font-weight:400;line-height:1.45}
+.check input{margin-top:4px}
+.check a{color:var(--accent)}
+.sell .btn{width:100%;justify-content:center;border:0;cursor:pointer}
+.actions{display:flex;flex-direction:column;gap:8px}
+.text-btn{background:none;border:0;color:var(--ink-2);font:500 14px var(--sans);text-decoration:underline;cursor:pointer;padding:8px}
+.promise{color:var(--muted);font-size:13px;margin:12px 0 0}
+.hint,.count{color:var(--muted);font-weight:400;font-size:13px;margin:0}
+.trust{border-top:1px solid var(--line);margin:22px 0 0;padding-top:14px;font-size:13px;color:var(--ink-2)}
+.trust a{color:var(--accent)}
+.hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+.noscript{margin-top:16px}
+button:disabled{opacity:.6;cursor:wait}
+@media (max-width:560px){.row2{grid-template-columns:1fr}}
+</style>
