@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ppautohaus.com.au/sitemap-index.xml

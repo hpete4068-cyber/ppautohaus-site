@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../lib/site';
+import { dealerSchema } from '../lib/schema';
+const a = SITE.address;
+---
+<Base title="Contact & Visit | Peters Prestige Autohaus, Brisbane" description="Contact Peters Prestige Autohaus. Visits by appointment in Brisbane." schema={dealerSchema}>
+  <section class="section"><div class="wrap grid">
+    <div><p class="eyebrow">Contact</p><h1>Visit by appointment</h1><p>Call or email to arrange a time.</p></div>
+    <dl>
+      <dt>Phone</dt><dd><a href={SITE.phoneHref}>{SITE.phone}</a></dd>
+      <dt>Email</dt><dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
+      <dt>Address</dt><dd>{a.street}<br />{a.locality} {a.region} {a.postcode}</dd>
+    </dl>
+  </div></section>
+</Base>
+<style>.grid{display:grid;grid-template-columns:1fr 1fr;gap:56px} dt{font:500 12px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:24px} dd{margin:6px 0 0;font:400 26px var(--serif)} @media(max-width:760px){.grid{grid-template-columns:1fr}}</style>

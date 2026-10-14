@@ -1,0 +1,21 @@
+---
+import { SITE } from '../lib/site';
+const year = new Date().getFullYear();
+---
+<footer class="ftr">
+  <div class="wrap grid">
+    <div><p class="mark">Peters Prestige Autohaus</p><p class="muted">Brisbane-based. Buying and selling prestige, classic and supercars Australia-wide.</p></div>
+    <div><p class="eyebrow">Contact</p><p><a href={SITE.phoneHref}>{SITE.phone}</a><br /><a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />By appointment</p></div>
+    <div><p class="eyebrow">Explore</p><p><a href="/stock">Stock</a><br /><a href="/#sell">Sell &amp; Consign</a><br /><a href="/#source">Sourcing</a><br /><a href={SITE.storageUrl}>Storage</a><br /><a href="/contact">Contact</a></p></div>
+  </div>
+  <div class="wrap legal"><span>© {year} Peters Prestige Autohaus</span><span>{SITE.legalName} · Licence No. {SITE.licenceNumber}</span></div>
+</footer>
+<style>
+.ftr{background:var(--ink);color:#e9e5dc;padding:72px 0 28px;margin-top:0}
+.grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+.mark{font:500 26px var(--serif);margin:0 0 12px} .muted{color:#a9a49a;max-width:36ch}
+.eyebrow{color:#a9a49a} a{text-decoration:none} a:hover{color:#fff;text-decoration:underline}
+p{line-height:2}
+.legal{display:flex;justify-content:space-between;border-top:1px solid #33322e;margin-top:48px;padding-top:20px;font-size:13px;color:#a9a49a}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
