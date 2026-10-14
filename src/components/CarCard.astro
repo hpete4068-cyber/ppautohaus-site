@@ -1,11 +1,23 @@
 ---
+import Photo from './Photo.astro';
 import { type Car, carTitle, formatPrice } from '../lib/stock';
-const { car } = Astro.props as { car: Car };
+import type { Shot } from '../lib/sample-photos';
+const { car, shots = [] } = Astro.props as { car: Car; shots?: Shot[] };
 ---
 <article class="card">
-  {car.photos[0]
-    ? <img src={car.photos[0]} alt={carTitle(car)} loading="lazy" width="800" height="600" />
-    : <div class="placeholder" role="img" aria-label="Placeholder image">Placeholder image</div>}
+  {shots.length > 0 ? (
+    <div class:list={['shots', { pair: shots.length > 1 }]}>
+      {shots.map(shot => (
+        <div class="frame r-3x2">
+          <Photo base={shot.base} alt={shot.alt} sizes="(max-width:860px) 100vw, 30vw" width={shot.width} height={shot.height} />
+        </div>
+      ))}
+    </div>
+  ) : car.photos[0] ? (
+    <img src={car.photos[0]} alt={carTitle(car)} loading="lazy" decoding="async" width="800" height="600" />
+  ) : (
+    <div class="placeholder" role="img" aria-label="Placeholder image">Placeholder image</div>
+  )}
   <div class="meta">
     {car.isSample && <span class="sample-badge">SAMPLE</span>}
     {car.status !== 'available' && <span class="status">{car.status}</span>}
@@ -16,6 +28,9 @@ const { car } = Astro.props as { car: Car };
 </article>
 <style>
 .card{background:var(--paper);border:1px solid var(--line)} .meta{padding:22px 22px 26px}
+.shots{display:grid;gap:4px}
+.shots.pair{grid-template-columns:1.4fr .9fr}
+.shots.pair .frame{aspect-ratio:auto;height:220px}
 h3{margin:10px 0 4px} .sub{color:var(--muted);font-size:14px;margin:0 0 14px}
 .price{font:500 14px var(--sans);letter-spacing:.08em;margin:0}
 .status{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-left:8px}

@@ -18,4 +18,10 @@ a{color:inherit} img{max-width:100%;display:block}
 .section{padding:clamp(64px,9vw,120px) 0} .rule{border:0;border-top:1px solid var(--line);margin:0}
 .sample-badge{display:inline-block;background:#8a1c1c;color:#fff;font:600 11px/1 var(--sans);letter-spacing:.14em;padding:6px 8px}
 .placeholder{background:repeating-linear-gradient(135deg,#e7e1d4 0 12px,#ece7dc 12px 24px);display:grid;place-items:center;color:var(--muted);font:500 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;aspect-ratio:4/3}
+.frame{overflow:hidden;background:#1c1b18;position:relative}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.r-16x9{aspect-ratio:16/9}
+.r-3x2{aspect-ratio:3/2}
+.r-3x4{aspect-ratio:3/4}
+.r-3x4 img{object-position:center 30%}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}

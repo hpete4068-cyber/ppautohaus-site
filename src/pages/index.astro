@@ -1,32 +1,56 @@
 ---
 import Base from '../layouts/Base.astro';
 import CarCard from '../components/CarCard.astro';
+import Photo from '../components/Photo.astro';
+import SellForm from '../components/SellForm.astro';
 import { getStock } from '../lib/stock';
+import { SAMPLE_SHOTS } from '../lib/sample-photos';
 import { SITE } from '../lib/site';
 import { dealerSchema } from '../lib/schema';
 const stock = await getStock();
 const featured = stock.filter(c => c.status !== 'sold').slice(0, 3);
 const usingSample = stock.some(c => c.isSample);
-// Vehicles listed as bought/sold on the current ppautohaus.com.au (Oct 2026).
 const sold = ['1987 Ferrari Testarossa','2019 Aston Martin DB11','2020 Lamborghini Huracán EVO','1993 Bentley Continental R Coupe','2024 Porsche 911 Turbo S','1998 Aston Martin DB7'];
+const steps = [
+  { n:'01', t:'Enquire', d:'Tell us the rego, or the make, model and year, and how to reach you.' },
+  { n:'02', t:'Appraisal', d:'We look at the car with you. Confidential, and obligation-free.' },
+  { n:'03', t:'Offer or consign', d:'We can offer to buy the car, or consign it and present it to buyers.' },
+  { n:'04', t:'Settled', d:'When you accept, we arrange the handover and settlement with you.' },
+];
 const paths = [
-  { id:'buy', k:'01', t:'Buy', d:'Prestige, luxury, classic and supercars, inspected and presented properly.', cta:'View stock', h:'/stock' },
-  { id:'sell', k:'02', t:'Sell & Consign', d:'We buy prestige, luxury, classic and supercars Australia-wide. Fast, fair offers with a hassle-free process.', cta:'Discuss your car', h:'/contact' },
-  { id:'source', k:'03', t:'Source', d:'Looking for a specific vehicle? We search our network across Australia to a tailored brief.', cta:'Start a brief', h:'/contact' },
+  { id:'buy', k:'01', t:'Buy', d:'Prestige, luxury, classic and supercars, inspected and presented properly.', cta:'View stock', h:'/stock', image:'path-buy', w:2400, h:1600, alt:'Red Ferrari F40 on the grass, front three-quarter view.' },
+  { id:'consign', k:'02', t:'Sell & Consign', d:'We buy prestige, luxury, classic and supercars Australia-wide, and we consign them for clients who would rather we present the car.', cta:'Start an appraisal', h:'#sell', image:'path-sell', w:2400, h:1350, alt:'White classic Ferrari facing the camera, the kind of car we buy and consign.' },
+  { id:'source', k:'03', t:'Source', d:'Looking for a specific vehicle? We search our network across Australia to a tailored brief.', cta:'Start a brief', h:'/contact', image:'path-source', w:2400, h:1350, alt:'White classic Ferrari from the rear three-quarter, the kind of car we can search for.' },
 ];
 ---
 <Base title="Peters Prestige Autohaus | Prestige, Classic & Supercar Specialist, Brisbane"
   description="Brisbane-based specialist buying and selling prestige, luxury, classic and supercars Australia-wide. Sales, consignment, sourcing, storage and detailing."
   schema={dealerSchema}>
-  <section class="hero">
+  <section class="hero" id="sell">
     <div class="wrap hero-grid">
-      <div>
-        <p class="eyebrow">Brisbane · Australia-wide</p>
-        <h1>Prestige, classic &amp; supercars, bought and sold with care.</h1>
-        <p class="lede">A Brisbane-based, family-owned specialist. We buy, sell, consign and source exceptional cars for clients across Australia.</p>
-        <div class="ctas"><a class="btn btn-primary" href="/stock">View stock</a><a class="btn" href="#sell">Sell your car</a></div>
-      </div>
-      <div class="placeholder hero-img" role="img" aria-label="Placeholder image">Placeholder image · hero photograph</div>
+      <figure class="hero-media">
+        <div class="frame r-16x9">
+          <Photo
+            base="hero-testarossa-hillside"
+            alt="Red Ferrari Testarossa parked on a grassy hillside, front three-quarter view with the pop-up headlights raised."
+            sizes="(max-width:900px) 100vw, 58vw"
+            width={2400}
+            height={1350}
+            eager
+          />
+        </div>
+        <figcaption>Prestige, classic and supercars, bought and sold with care.</figcaption>
+      </figure>
+      <div class="hero-form"><SellForm /></div>
+    </div>
+  </section>
+  <section class="section how" id="how-it-works" aria-labelledby="how-title">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-title">From enquiry to settlement</h2>
+      <ol class="how-grid">
+        {steps.map(step => <li><span>{step.n}</span><h3>{step.t}</h3><p>{step.d}</p></li>)}
+      </ol>
     </div>
   </section>
   <hr class="rule" />
@@ -34,18 +58,25 @@ const paths = [
     <div class="wrap">
       <p class="eyebrow">How we work</p>
       <div class="paths">
-        {paths.map(p => <article id={p.id} class="path"><span class="k">{p.k}</span><h2>{p.t}</h2><p>{p.d}</p><a href={p.h}>{p.cta} →</a></article>)}
+        {paths.map(p => (
+          <article id={p.id} class="path">
+            <div class="frame r-3x2 path-frame">
+              <Photo base={p.image} alt={p.alt} sizes="(max-width:860px) 100vw, 33vw" width={p.w} height={p.h} />
+            </div>
+            <span class="k">{p.k}</span><h2>{p.t}</h2><p>{p.d}</p><a href={p.h}>{p.cta} →</a>
+          </article>
+        ))}
       </div>
     </div>
   </section>
   <section class="section stock">
     <div class="wrap">
       <div class="head"><div><p class="eyebrow">Current stock</p><h2>Featured</h2></div><a href="/stock">All stock →</a></div>
-      {usingSample && <p class="note"><span class="sample-badge">SAMPLE</span> Sample listings shown until the stock register sheet is connected.</p>}
-      <div class="cars">{featured.map(car => <CarCard car={car} />)}</div>
+      {usingSample && <p class="note"><span class="sample-badge">SAMPLE</span> Sample listings shown until the stock register sheet is connected. The photographs are real cars, not these listings.</p>}
+      <div class="cars">{featured.map(car => <CarCard car={car} shots={car.isSample ? SAMPLE_SHOTS[car.id] : undefined} />)}</div>
     </div>
   </section>
-  <section class="section">
+  <section class="section" id="sold">
     <div class="wrap sold">
       <div><p class="eyebrow">Track record</p><h2>Recently bought &amp; sold</h2><p class="muted">A selection of cars that have passed through our hands.</p></div>
       <ul>{sold.map(s => <li>{s}</li>)}</ul>
@@ -55,8 +86,32 @@ const paths = [
     <div class="wrap">
       <p class="eyebrow">Also offered</p>
       <div class="svc-grid">
-        <div><h3>Boutique storage</h3><p>Discreet, secure storage in South-West Brisbane with 24/7 back-to-base alarms and AI-enhanced CCTV.</p><a href={SITE.storageUrl}>Storage →</a></div>
-        <div><h3>Detailing</h3><p>Ceramic coating, paint protection film, paint correction and full details.</p><a href="/contact">Enquire →</a></div>
+        <article>
+          <div class="svc-photos">
+            <div class="frame r-3x4">
+              <Photo base="services-storage-reveal" alt="A grey Ferrari being uncovered from a beige car cover inside a storage showroom." sizes="(max-width:860px) 45vw, 22vw" width={2400} height={3600} position="center 22%" />
+            </div>
+            <div class="frame r-3x4">
+              <Photo base="services-storage-covered" alt="A dark car fully covered, raised on a lift in a dim storage garage." sizes="(max-width:860px) 45vw, 22vw" width={2400} height={3600} position="center 40%" />
+            </div>
+          </div>
+          <h3>Boutique storage</h3>
+          <p>Discreet, secure storage in South-West Brisbane with 24/7 back-to-base alarms and AI-enhanced CCTV.</p>
+          <a href={SITE.storageUrl}>Storage →</a>
+        </article>
+        <article>
+          <div class="svc-photos">
+            <div class="frame r-16x9">
+              <Photo base="services-detailing-tail" alt="Close rear view of a red Ferrari 308, tail panel and twin exhausts after detailing." sizes="(max-width:860px) 45vw, 22vw" width={2400} height={1350} />
+            </div>
+            <div class="frame r-16x9">
+              <Photo base="services-detailing-wheel" alt="Close-up of a clean Ferrari wheel with a yellow brake caliper." sizes="(max-width:860px) 45vw, 22vw" width={2400} height={1350} />
+            </div>
+          </div>
+          <h3>Detailing</h3>
+          <p>Ceramic coating, paint protection film, paint correction and full details.</p>
+          <a href="/contact">Enquire →</a>
+        </article>
       </div>
     </div>
   </section>
@@ -69,27 +124,40 @@ const paths = [
   </section>
 </Base>
 <style>
-.hero{padding:clamp(48px,7vw,96px) 0}
-.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
-.lede{font-size:18px;color:var(--ink-2);max-width:46ch;margin:0 0 32px}
-.ctas{display:flex;gap:12px;flex-wrap:wrap} .hero-img{aspect-ratio:4/5}
+.hero{padding:clamp(28px,5vw,72px) 0 0;scroll-margin-top:80px}
+#sold{scroll-margin-top:80px}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:28px;align-items:start}
+.hero-media{margin:0;order:2}
+.hero-media figcaption{margin-top:12px;color:var(--muted);font-size:14px}
+.hero-form{order:1}
+.how{padding-bottom:0}
+.how-grid{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin:8px 0 0;padding:28px 0 0;border-top:1px solid var(--ink)}
+.how-grid span{font:500 13px var(--sans);color:var(--muted);letter-spacing:.08em}
+.how-grid h3{margin:12px 0 8px;font-size:28px}
+.how-grid p{color:var(--ink-2);margin:0}
 .paths{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink)}
-.path{padding:32px 32px 8px 0;border-right:1px solid var(--line)} .path+.path{padding-left:32px} .path:last-child{border-right:0}
+.path{padding:28px 28px 8px 0;border-right:1px solid var(--line)} .path+.path{padding-left:28px} .path:last-child{border-right:0}
+.path-frame{margin-bottom:22px}
 .path p{color:var(--ink-2)} .path a{font:500 13px var(--sans);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--accent)}
 .k{font:500 13px var(--sans);color:var(--muted);display:block;margin-bottom:24px}
 .stock{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .head{display:flex;justify-content:space-between;align-items:end;margin-bottom:28px} .head a{font-size:14px}
-.note{font-size:14px;color:var(--muted);display:flex;gap:10px;align-items:center}
+.note{font-size:14px;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .cars{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .sold{display:grid;grid-template-columns:1fr 1.3fr;gap:56px} .muted{color:var(--muted)}
 .sold ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
 .sold li{font:400 26px/1.2 var(--serif);padding:16px 0;border-bottom:1px solid var(--line)}
 .svc{padding-top:0} .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;border-top:1px solid var(--line);padding-top:32px}
+.svc-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
 .svc a{color:var(--accent);font-size:14px}
-.cta{background:var(--accent);color:#fff;padding:96px 0;text-align:center} .cta .ctas{justify-content:center}
+.cta{background:var(--accent);color:#fff;padding:96px 0;text-align:center} .cta .ctas{justify-content:center;display:flex;gap:12px;flex-wrap:wrap}
 .cta .btn-primary{background:#fff;color:var(--accent);border-color:#fff} .light{border-color:#fff;color:#fff}
+@media (min-width:900px){
+  .hero-grid{grid-template-columns:1.15fr .9fr;gap:48px}
+  .hero-media,.hero-form{order:0}
+}
 @media (max-width:860px){
-  .hero-grid,.sold,.svc-grid{grid-template-columns:1fr;gap:32px} .hero-img{aspect-ratio:4/3}
-  .paths,.cars{grid-template-columns:1fr} .path,.path+.path{padding:28px 0;border-right:0;border-bottom:1px solid var(--line)}
+  .how-grid,.paths,.cars,.sold,.svc-grid{grid-template-columns:1fr;gap:28px}
+  .path,.path+.path{padding:28px 0;border-right:0;border-bottom:1px solid var(--line)}
 }
 </style>

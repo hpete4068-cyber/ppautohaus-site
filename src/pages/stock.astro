@@ -2,13 +2,14 @@
 import Base from '../layouts/Base.astro';
 import CarCard from '../components/CarCard.astro';
 import { getStock } from '../lib/stock';
+import { SAMPLE_SHOTS } from '../lib/sample-photos';
 const stock = (await getStock()).filter(c => c.status !== 'sold');
 ---
 <Base title="Current Stock | Peters Prestige Autohaus" description="Current prestige, classic and supercar stock from Peters Prestige Autohaus, Brisbane. Delivered Australia-wide.">
   <section class="section"><div class="wrap">
     <p class="eyebrow">Stock</p><h1>Current stock</h1>
     {stock.some(c => c.isSample) && <p><span class="sample-badge">SAMPLE</span> Sample listings until the stock register is connected.</p>}
-    <div class="cars">{stock.map(car => <CarCard car={car} />)}</div>
+    <div class="cars">{stock.map(car => <CarCard car={car} shots={car.isSample ? SAMPLE_SHOTS[car.id] : undefined} />)}</div>
   </div></section>
 </Base>
 <style>.cars{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;margin-top:32px}</style>
